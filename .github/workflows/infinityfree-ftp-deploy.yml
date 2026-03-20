@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - deploy/infinityfree-ftp
   workflow_dispatch:
 
 jobs:
