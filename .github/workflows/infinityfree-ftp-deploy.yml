@@ -23,5 +23,5 @@ jobs:
           port: 21
           protocol: ftp
           local-dir: TESTING/
-          server-dir: ${{ secrets.FTP_TARGET_DIR || 'public_html/' }}
+          server-dir: public_html/
 
