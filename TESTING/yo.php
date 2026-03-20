@@ -1,7 +1,139 @@
-hello world
+<!DOCTYPE html>
 
-inupdate ko na
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Verify Email - MyDental.com</title>
+<!-- BEGIN: Scripts and Configuration -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            mydental: {
+              dark: '#101922',
+              blue: '#2b8beb',
+              light: '#f8fafc'
+            }
+          }
+        }
+      }
+    }
+  </script>
+<!-- END: Scripts and Configuration -->
+<!-- BEGIN: Custom Styles -->
+<style data-purpose="layout-refinements">
+    /* Remove arrows/spinners from number inputs */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+    
+    .otp-input:focus {
+      border-color: #2b8beb;
+      box-shadow: 0 0 0 2px rgba(43, 139, 235, 0.2);
+    }
+  </style>
+<!-- END: Custom Styles -->
+</head>
+<body class="bg-mydental-light min-h-screen flex items-center justify-center p-4">
+<!-- BEGIN: Verification Card -->
+<main class="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 md:p-12" data-purpose="otp-verification-container">
+<!-- BEGIN: Header Section -->
+<header class="text-center mb-10">
+<div class="mb-6 inline-flex items-center justify-center w-16 h-16 bg-blue-50 rounded-full">
+<!-- Brand Icon Representation -->
+<svg class="h-8 w-8 text-mydental-blue" fill="none" stroke="currentColor" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<h1 class="text-3xl font-bold text-mydental-dark mb-3">Verify Your Email</h1>
+<p class="text-gray-500 text-sm leading-relaxed">
+        We've sent a 6-digit verification code to your email address. Please enter it below to continue.
+      </p>
+</header>
+<!-- END: Header Section -->
+<!-- BEGIN: OTP Form -->
+<form action="#" class="space-y-8" id="otp-form" method="POST">
+<!-- Input Group -->
+<div class="flex justify-between gap-2 md:gap-4" data-purpose="otp-inputs-group">
+<!-- Using 6 individual inputs for the OTP digits -->
+<input autofocus="" class="otp-input w-12 h-14 text-center text-2xl font-bold border-2 border-gray-200 rounded-lg focus:outline-none transition-all" data-index="0" maxlength="1" required="" type="text"/>
+<input class="otp-input w-12 h-14 text-center text-2xl font-bold border-2 border-gray-200 rounded-lg focus:outline-none transition-all" data-index="1" maxlength="1" required="" type="text"/>
+<input class="otp-input w-12 h-14 text-center text-2xl font-bold border-2 border-gray-200 rounded-lg focus:outline-none transition-all" data-index="2" maxlength="1" required="" type="text"/>
+<input class="otp-input w-12 h-14 text-center text-2xl font-bold border-2 border-gray-200 rounded-lg focus:outline-none transition-all" data-index="3" maxlength="1" required="" type="text"/>
+<input class="otp-input w-12 h-14 text-center text-2xl font-bold border-2 border-gray-200 rounded-lg focus:outline-none transition-all" data-index="4" maxlength="1" required="" type="text"/>
+<input class="otp-input w-12 h-14 text-center text-2xl font-bold border-2 border-gray-200 rounded-lg focus:outline-none transition-all" data-index="5" maxlength="1" required="" type="text"/>
+</div>
+<!-- Action Button -->
+<div class="pt-2">
+<button class="w-full py-4 bg-mydental-blue hover:bg-blue-600 text-white font-semibold rounded-xl shadow-lg shadow-blue-200 transition-colors focus:ring-4 focus:ring-blue-200" type="submit">
+          Verify Email
+        </button>
+</div>
+</form>
+<!-- END: OTP Form -->
+<!-- BEGIN: Footer Links -->
+<footer class="mt-10 text-center">
+<p class="text-gray-600 text-sm">
+        Didn't receive the code? 
+        <a class="text-mydental-blue font-semibold hover:underline decoration-2 underline-offset-4 ml-1" href="#">
+          Resend Code
+        </a>
+</p>
+<div class="mt-8 border-t border-gray-100 pt-6">
+<p class="text-xs text-gray-400">
+          © 2023 MyDental.com. All rights reserved.
+        </p>
+</div>
+</footer>
+<!-- END: Footer Links -->
+</main>
+<!-- END: Verification Card -->
+<!-- BEGIN: Interactive Behavior -->
+<script data-purpose="otp-input-handling">
+    const inputs = document.querySelectorAll('.otp-input');
+    
+    inputs.forEach((input, index) => {
+      // Auto-focus next input on keyup
+      input.addEventListener('keyup', (e) => {
+        if (e.key >= 0 && e.key <= 9) {
+          if (index < inputs.length - 1) {
+            inputs[index + 1].focus();
+          }
+        } else if (e.key === 'Backspace') {
+          if (index > 0) {
+            inputs[index - 1].focus();
+          }
+        }
+      });
 
-haeeey
+      // Handle pasting
+      input.addEventListener('paste', (e) => {
+        const data = e.clipboardData.getData('text');
+        if (data.length === 6 && /^\d+$/.test(data)) {
+          inputs.forEach((input, i) => {
+            input.value = data[i];
+          });
+          inputs[5].focus();
+        }
+      });
+    });
 
-hohaaa
+    // Handle Form Submit
+    document.getElementById('otp-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      let code = "";
+      inputs.forEach(input => code += input.value);
+      console.log('Verifying code:', code);
+      // In a real application, you would trigger your API call here
+      alert('Verification code ' + code + ' submitted.');
+    });
+  </script>
+<!-- END: Interactive Behavior -->
+</body></html>
